@@ -19,8 +19,8 @@ app.use(morgan('dev'));
 mongoLib.connect({ url: process.env.DATABASE_URL});
 
 // Routes
-app.use('/', (_req: express.Request, res: express.Response): express.Response => res.json("Hello World!"));
 app.use('/reservations', require('./entities/reservation/reservation.routes'));
+app.use('/', (_req: express.Request, res: express.Response): express.Response => res.json("Hello World!"));
 
 // Guard routes
 app.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {

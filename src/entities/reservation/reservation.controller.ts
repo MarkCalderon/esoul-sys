@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 const { sendServerError, sendOkResponse } = require('../../core/responses');
 const Reservation = require("./reservation.model");
 
-export const getReservations = async (res: Response) => {
+export const getReservations = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reservations = await Reservation.find();
     return sendOkResponse({ res, payload: reservations });
@@ -11,7 +11,7 @@ export const getReservations = async (res: Response) => {
   }
 };
 
-export const saveReservation = async (req: Request, res: Response) => {
+export const saveReservation = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const reservation = await Reservation.create(req.body);
     sendOkResponse({ res, payload: reservation });
@@ -20,7 +20,7 @@ export const saveReservation = async (req: Request, res: Response) => {
   }
 };
 
-export const getReservation = async(req: Request, res: Response) => {
+export const getReservation = async(req: Request, res: Response, next: NextFunction) => {
   try {
     const reservation = await Reservation.findById(req.params.id);
     sendOkResponse({ res, payload: reservation });
@@ -29,7 +29,7 @@ export const getReservation = async(req: Request, res: Response) => {
   }
 };
 
-export const updateReservation = async(req: Request, res: Response) => {
+export const updateReservation = async(req: Request, res: Response, next: NextFunction) => {
   try {
     const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, { new: true });
     sendOkResponse({ res, payload: reservation });
@@ -38,7 +38,7 @@ export const updateReservation = async(req: Request, res: Response) => {
   }
 };
 
-export const deleteReservation = async(req: Request, res: Response) => {
+export const deleteReservation = async(req: Request, res: Response, next: NextFunction) => {
   try {
     await Reservation.findByIdAndDelete(req.params.id);
     sendOkResponse({ res, payload: { message: 'Reservation deleted successfully' } });
