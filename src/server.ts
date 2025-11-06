@@ -1,4 +1,5 @@
 import { RouteError } from './core/types';
+import { Request, Response, NextFunction } from 'express';
 import express from 'express';
 const morgan = require('morgan');
 const mongoLib = require('./lib.mongo');
@@ -20,17 +21,17 @@ mongoLib.connect({ url: process.env.DATABASE_URL});
 
 // Routes
 app.use('/reservations', require('./entities/reservation/reservation.routes'));
-app.use('/', (_req: express.Request, res: express.Response): express.Response => res.json("Hello World!"));
+app.use('/', (_req: Request, res: Response): Response => res.json("Hello World!"));
 
 // Guard routes
-app.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((_req: Request, res: Response, next: NextFunction) => {
   const error: RouteError = new Error('Not Found');
   error.status = 404;
   error.message = 'Route not found';
   next(error);
 });
 
-app.use((error: RouteError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+app.use((error: RouteError, _req: Request, res: Response, _next: NextFunction) => {
   res.status(error.status || 500);
   res.json({
     error: {
