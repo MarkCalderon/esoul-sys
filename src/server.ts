@@ -8,11 +8,8 @@ require('./core/passport.config');
 const morgan = require('morgan');
 const mongoLib = require('./lib.mongo');
 
-
 const app = express();
 const port = process.env.PORT;
-
-
 
 // General middlewares
 app.use(express.json());
