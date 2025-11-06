@@ -1,15 +1,18 @@
 import { RouteError } from './core/types';
 import { Request, Response, NextFunction } from 'express';
 import express from 'express';
+
+require('dotenv').config();
+require('./core/passport.config');
+
 const morgan = require('morgan');
 const mongoLib = require('./lib.mongo');
 
 
 const app = express();
-const port = 4343;
+const port = process.env.PORT;
 
-require('dotenv').config();
-require('./core/passport.config');
+
 
 // General middlewares
 app.use(express.json());
