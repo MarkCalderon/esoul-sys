@@ -1,11 +1,16 @@
 import { body } from "express-validator";
-import { registerUser, loginUser } from "./user.controller";
+import { registerUser, loginUser, getUserProfile } from "./user.controller";
+import { AuthMiddleware } from '../../core/authMiddle';
 import multer from "multer";
+
 
 const express = require("express");
 const router = express.Router();
 const upload = multer();
 
+
+
+// Public routes
 router.post(
   "/register",
   upload.none(),
@@ -18,7 +23,7 @@ router.post(
   ],
   registerUser
 );
-
 router.post("/login", upload.none(), loginUser);
+router.get("/profile", [AuthMiddleware.authenticate, AuthMiddleware.roleCheck("admin")], getUserProfile);
 
 module.exports = router;

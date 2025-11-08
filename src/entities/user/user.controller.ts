@@ -1,6 +1,8 @@
 import e, { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
-import { sendOkResponse, sendServerError } from "../../core/responses";
+import { sendForbiddenResponse, sendOkResponse, sendServerError } from "../../core/responses";
+import { UserIO } from "../../core/types";
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./user.model");
@@ -54,8 +56,6 @@ export const loginUser = async (
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    console.log(process.env.JWT_SECRET);
-    console.log("user: ", user);
     try {
       const token = jwt.sign(
         {
@@ -75,5 +75,25 @@ export const loginUser = async (
     }
   } catch (error) {
     return sendServerError(res, "Failed to login user");
+  }
+};
+
+export const getUserProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req?.user as UserIO | undefined;
+  if(!user) return sendForbiddenResponse(res, "User not authenticated");
+
+  try {
+    const userData = await User.findOne({ _id: user.id }).select('username email role');
+    return sendOkResponse({
+      res,
+      payload: userData,
+      message: "User profile retrieved successfully",
+    });
+  } catch (error) {
+    return sendServerError(res, "Failed to retrieve users");
   }
 };
