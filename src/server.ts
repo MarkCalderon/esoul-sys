@@ -21,6 +21,7 @@ mongoLib.connect({ url: process.env.DATABASE_URL});
 
 // Routes
 app.use('/reservations', require('./entities/reservation/reservation.routes'));
+app.use('/user', require('./entities/user/user.routes'));
 app.use('/', (_req: Request, res: Response): Response => res.json("Hello World!"));
 
 // Guard routes

@@ -12,16 +12,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-validator": "^7.3.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3",
     "morgan": "^1.10.1",
+    "multer": "^2.0.2",
     "passport": "^0.7.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
+    "@types/multer": "^2.0.0",
     "@types/passport": "^1.0.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

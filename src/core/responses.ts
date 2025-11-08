@@ -2,11 +2,12 @@ import { Response } from 'express';
 
 interface OkResponseOptions {
   res: Response;
+  message?: string;
   payload: any;
 }
 
-export function sendOkResponse({ res, payload }: OkResponseOptions) {
-  res.status(200).json({ success: true, payload });
+export function sendOkResponse({ res, payload, message }: OkResponseOptions) {
+  res.status(200).json({ success: true, payload, message });
 }
 
 export function sendServerError(res: Response, message: string) {
