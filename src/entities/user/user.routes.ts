@@ -1,14 +1,12 @@
 import { body } from "express-validator";
-import { registerUser, loginUser, getUserProfile } from "./user.controller";
-import { AuthMiddleware } from '../../core/authMiddle';
 import multer from "multer";
-
+import { AuthMiddleware } from '../../core/authMiddle';
+import storage from "../../core/multiStorage";
+import { getUserProfile, loginUser, registerUser } from "./user.controller";
 
 const express = require("express");
 const router = express.Router();
-const upload = multer();
-
-
+const upload = multer({ storage: storage });
 
 // Public routes
 router.post(

@@ -2,7 +2,7 @@ export interface RouteError extends Error {
   status?: number;
 }
 
-export interface UserIO {
+export interface IJWTResponse {
   id: string;
   role: string;
   iat: number;

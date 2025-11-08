@@ -1,11 +1,11 @@
-import e, { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { sendForbiddenResponse, sendOkResponse, sendServerError } from "../../core/responses";
-import { UserIO } from "../../core/types";
+import User, { IUser } from "./user.model";
+import { IJWTResponse } from "../../core/types";
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("./user.model");
 
 export const registerUser = async (
   req: Request,
@@ -21,7 +21,7 @@ export const registerUser = async (
 
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
+    const user: IUser = new User({
       username,
       email,
       password: hashedPassword,
@@ -46,7 +46,7 @@ export const loginUser = async (
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user: IUser | null = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User is not found" });
     }
@@ -83,7 +83,7 @@ export const getUserProfile = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = req?.user as UserIO | undefined;
+  const user = req?.user as IJWTResponse | undefined;
   if(!user) return sendForbiddenResponse(res, "User not authenticated");
 
   try {

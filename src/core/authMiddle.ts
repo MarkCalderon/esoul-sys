@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { sendForbiddenResponse } from "./responses";
-import { UserIO } from "./types";
+import { IJWTResponse } from "./types";
 
 export class AuthMiddleware {
   static authenticate(req: Request, res: Response, next: NextFunction) {
@@ -23,8 +23,7 @@ export class AuthMiddleware {
 
   static roleCheck = (requiredRole: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
-      const user = req.user as UserIO | undefined;
-      console.log('user role', user?.role);
+      const user = req.user as IJWTResponse | undefined;
       if (!user || user.role !== requiredRole) return sendForbiddenResponse(res, "Unauthorized access");
 
       next();

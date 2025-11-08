@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 const { sendServerError, sendOkResponse } = require('../../core/responses');
-const Reservation = require("./reservation.model");
+import Reservation, { IReservation } from "./reservation.model";
 
 export const getReservations = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const reservations = await Reservation.find();
+    const reservations: IReservation[] = await Reservation.find();
     return sendOkResponse({ res, payload: reservations });
   } catch (error) {
     return sendServerError(res, 'Failed to fetch reservations');
@@ -13,7 +13,7 @@ export const getReservations = async (req: Request, res: Response, next: NextFun
 
 export const saveReservation = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const reservation = await Reservation.create(req.body);
+    const reservation: IReservation = await Reservation.create(req.body);
     sendOkResponse({ res, payload: reservation });
   } catch (error) {
     sendServerError(res, 'Failed to create reservation');
@@ -22,7 +22,7 @@ export const saveReservation = async (req: Request, res: Response, next: NextFun
 
 export const getReservation = async(req: Request, res: Response, next: NextFunction) => {
   try {
-    const reservation = await Reservation.findById(req.params.id);
+    const reservation: IReservation | null = await Reservation.findById(req.params.id);
     sendOkResponse({ res, payload: reservation });
   } catch (error) {
     sendServerError(res, 'Failed to fetch reservation');
@@ -31,7 +31,7 @@ export const getReservation = async(req: Request, res: Response, next: NextFunct
 
 export const updateReservation = async(req: Request, res: Response, next: NextFunction) => {
   try {
-    const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const reservation: IReservation | null = await Reservation.findByIdAndUpdate(req.params.id, req.body, { new: true });
     sendOkResponse({ res, payload: reservation });
   } catch (error) {
     sendServerError(res, 'Failed to update reservation');
